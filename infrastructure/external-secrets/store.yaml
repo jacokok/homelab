@@ -13,10 +13,12 @@ spec:
         tokenSecretRef:
           name: "vault-token"
           key: "token"
+          namespace: external-secrets
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: vault-token
+  namespace: external-secrets
 data:
   token: cy5pN2p6WVp2dTVVc213cmJQd21nM3lrd1gK
