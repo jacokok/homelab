@@ -18,3 +18,6 @@ flux get kustomizations -w
 # Reconcile
 flux reconcile source git flux-system
 flux reconcile kustomization infrastructure
+
+kubectl describe kustomization apps -n flux-system
+kubectl describe kustomization infrastructure -n flux-system
