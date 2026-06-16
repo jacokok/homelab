@@ -13,6 +13,15 @@ spec:
         kind: HelmRepository
         name: longhorn-repo
       version: v1.12.0
+  values:
+    defaultSettings:
+      defaultReplicaCount: "2"
+      dataLocality: "best-effort"
+      replicaAutoBalance: "best-effort"
+      storageOverProvisioningPercentage: "500"
+      storageReservedPercentage: "10"
+      storageMinAvailableCount: "1"
+      replicaSoftAntiAffinity: "true"
   install:
     crds: Create
   upgrade:
