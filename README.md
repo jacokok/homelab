@@ -21,3 +21,5 @@ flux reconcile kustomization infrastructure
 
 kubectl describe kustomization apps -n flux-system
 kubectl describe kustomization infrastructure -n flux-system
+
+kubectl get events -n flux-system --sort-by='.lastTimestamp'
