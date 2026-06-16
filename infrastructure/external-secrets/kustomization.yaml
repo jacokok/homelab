@@ -5,3 +5,4 @@ resources:
   - repo.yaml
   - release.yaml
   - store.yaml
+  - secret-test.yaml
