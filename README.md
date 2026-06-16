@@ -8,6 +8,16 @@ Homelab test
 - infrastructure
 - apps
 
+### Init Secrets
+
+```bash
+# create age.agekey from private key or copy from ~/.config/sops/age/keys.txt
+cp ~/.config/sops/age/keys.txt age.agekey
+kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
+kubectl create secret generic sops-age -n flux-system --from-file age.agekey
+rm age.agekey
+```
+
 ### Flux
 
 ```bash
@@ -26,16 +36,6 @@ kubectl get events -n flux-system --sort-by='.lastTimestamp'
 
 # Force secret refresh
 kubectl annotate externalsecret test-secret -n external-secrets force-sync=\$(date +%s) --overwrite
-```
-
-### Init Secrets
-
-```bash
-# create age.agekey from private key or copy from ~/.config/sops/age/keys.txt
-cp ~/.config/sops/age/keys.txt age.agekey
-kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
-kubectl create secret generic sops-age -n flux-system --from-file age.agekey
-rm age.agekey
 ```
 
 ### Manage Secrets
