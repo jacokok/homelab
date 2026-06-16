@@ -11,6 +11,10 @@ spec:
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: longhorn-system
+        name: longhorn-repo
       version: v1.12.0
-  interval: 1m0s
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  interval: 1h0m0s
