@@ -1,9 +1,9 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: flux-operator
+  name: sealed-secrets
   namespace: flux-system
 spec:
-  interval: 2h
-  type: oci
-  url: oci://ghcr.io/controlplaneio-fluxcd/charts
+  interval: 1h0m0s
+  url: https://bitnami-labs.github.io/sealed-secrets
