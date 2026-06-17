@@ -4,6 +4,8 @@ kind: HelmRepository
 metadata:
   name: longhorn-repo
   namespace: longhorn-system
+  labels:
+    app.kubernetes.io/name: longhorn-repo
 spec:
   interval: 1h0m0s
   url: https://charts.longhorn.io
