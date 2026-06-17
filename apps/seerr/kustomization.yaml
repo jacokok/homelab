@@ -4,3 +4,4 @@ namespace: seerr
 resources:
   - namespace.yaml
   - volume.yaml
+  - deployment.yaml

@@ -13,9 +13,23 @@ Homelab test
 ```bash
 # create age.agekey from private key or copy from ~/.config/sops/age/keys.txt
 cp ~/.config/sops/age/keys.txt age.agekey
-kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
 kubectl create secret generic sops-age -n flux-system --from-file age.agekey
 rm age.agekey
+```
+
+sudo apt install open-iscsi
+sudo systemctl enable --now iscsid
+
+### Bootstrap Flux
+
+```bash
+flux check --pre
+flux bootstrap github \
+  --owner=jacokok \
+  --repository=homelab \
+  --branch=main \
+  --path=./cluster \
+  --personal
 ```
 
 ### Flux
