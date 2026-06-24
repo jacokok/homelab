@@ -14,8 +14,8 @@ spec:
         name: k8up-repo
       version: 4.9.0
   values:
-    defaultSettings:
-      namespace: "k8up"
+    k8up:
+      operatorNamespace: "k8up"
   install:
     crds: Create
     remediation:
