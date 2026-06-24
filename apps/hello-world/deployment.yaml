@@ -23,6 +23,7 @@ spec:
             - |
               mkdir -p /www
               echo "hello world" > /www/index.html
+              apk add --no-cache busybox-httpd > /dev/null 2>&1
               httpd -f -p 8080 -h /www
           livenessProbe:
             httpGet:
