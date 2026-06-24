@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: hello-world
+        k8up.io/backup: "true"
     spec:
       containers:
         - name: hello-world

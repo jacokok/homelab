@@ -1,0 +1,41 @@
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: k8up-schedule
+  namespace: k8up
+spec:
+  backend:
+    repoPasswordSecretRef:
+      name: backup-secret
+      key: password
+    s3:
+      endpoint: http://nas.lan:9000
+      bucket: backups
+      accessKeyIDSecretRef:
+        name: backup-secret
+        key: access-key
+      secretAccessKeySecretRef:
+        name: backup-secret
+        key: secret-key
+  backup:
+    schedule: '0 2 * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+    resources:
+      namespaces:
+        - hello-world
+      podSelection:
+        matchExpressions:
+          - key: k8up.io/backup
+            operator: In
+            values:
+              - "true"
+  check:
+    schedule: '0 3 * * 0'
+  prune:
+    schedule: '0 1 * * 0'
+    retention:
+      keepLast: 5
+      keepDaily: 7
+      keepWeekly: 4
+      keepMonthly: 3
