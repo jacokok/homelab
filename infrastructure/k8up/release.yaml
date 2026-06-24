@@ -1,0 +1,30 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: k8up-release
+  namespace: k8up
+spec:
+  chart:
+    spec:
+      chart: k8up-io
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: k8up-repo
+      version: 4.9.0
+  values:
+    defaultSettings:
+      namespace: "k8up"
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  interval: 1h0m0s
+  timeout: 30m

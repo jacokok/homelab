@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: k8up-repo
+  namespace: k8up
+  labels:
+    app.kubernetes.io/name: k8up-repo
+spec:
+  interval: 1h0m0s
+  url: https://k8up-io.github.io/k8up
