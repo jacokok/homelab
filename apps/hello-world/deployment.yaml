@@ -35,12 +35,12 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /www
-              name: hello-world-data
+              name: hello-world-data-local
       restartPolicy: Always
       volumes:
-        - name: hello-world-data
+        - name: hello-world-data-local
           persistentVolumeClaim:
-            claimName: hello-world-data
+            claimName: hello-world-data-local
 ---
 apiVersion: v1
 kind: Service
