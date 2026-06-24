@@ -1,0 +1,20 @@
+apiVersion: k8up.io/v1
+kind: Backup
+metadata:
+  name: backup-test
+spec:
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  backend:
+    repoPasswordSecretRef:
+      name: backup-secret
+      key: password
+    s3:
+      endpoint: http://nas.lan:9000
+      bucket: backups
+      accessKeyIDSecretRef:
+        name: backup-secret
+        key: access-key
+      secretAccessKeySecretRef:
+        name: backup-secret
+        key: secret-key
