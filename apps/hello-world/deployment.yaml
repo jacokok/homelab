@@ -24,7 +24,7 @@ spec:
               mkdir -p /www
               echo "hello world" > /www/index.html
               apk add --no-cache darkhttpd > /dev/null 2>&1
-              darkhttpd /www --port 8080 --no-logs
+              darkhttpd /www --port 8080
           livenessProbe:
             httpGet:
               path: /
