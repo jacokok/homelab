@@ -4,6 +4,8 @@
 ## K3s Manager
 ```bash
 curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644
+# Do not run work here
+kubectl taint nodes earth node-role.kubernetes.io/control-plane=:NoSchedule --overwrite
 ```
 
 ## K3S worker
