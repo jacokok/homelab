@@ -2,9 +2,13 @@ apiVersion: k8up.io/v1
 kind: Backup
 metadata:
   name: backup-another
+  namespace: hello-world
 spec:
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 1
+  labelSelectors:
+    - matchLabels:
+        k8up.io/backup: "true"
   backend:
     repoPasswordSecretRef:
       name: backup-secret
