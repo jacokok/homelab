@@ -31,10 +31,10 @@ spec:
       volumes:
         - name: searxng-config
           persistentVolumeClaim:
-            claimName: searxng-config-pvc
+            claimName: searxng-config
         - name: searxng-data
           persistentVolumeClaim:
-            claimName: searxng-data-pvc
+            claimName: searxng-data
 ---
 apiVersion: v1
 kind: Service
