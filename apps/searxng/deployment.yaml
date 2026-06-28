@@ -47,7 +47,8 @@ spec:
         - name: searxng-config
           emptyDir: {}
         - name: valkey-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: valkey-data
         - name: searxng-data
           persistentVolumeClaim:
             claimName: searxng-data
