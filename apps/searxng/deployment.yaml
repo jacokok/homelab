@@ -27,11 +27,26 @@ spec:
           env:
             - name: SEARXNG_PORT
               value: "8080"
-            # - name: SEARXNG_REDIS_URL
-            #   value: redis://localhost:6379/0
+            - name: SEARXNG_REDIS_URL
+              value: redis://localhost:6379/0
+        - name: valkey
+          image: docker.io/valkey/valkey:8
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - mountPath: /data
+              name: valkey-data
+          args:
+            - --save
+            - "60"
+            - "1"
+            - --loglevel
+            - warning
       restartPolicy: Always
       volumes:
         - name: searxng-config
+          emptyDir: {}
+        - name: valkey-data
           emptyDir: {}
         - name: searxng-data
           persistentVolumeClaim:
