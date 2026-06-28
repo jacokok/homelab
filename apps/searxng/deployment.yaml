@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searxng
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: searxng
+  template:
+    metadata:
+      labels:
+        app: searxng
+    spec:
+      containers:
+        - name: searxng
+          image: docker.io/searxng/searxng:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /etc/searxng
+              name: searxng-config
+            - mountPath: /var/cache/searxng
+              name: searxng-data
+          # env:
+          #   - name: SEARXNG_REDIS_URL
+          #     value: redis://localhost:6379/0
+      restartPolicy: Always
+      volumes:
+        - name: searxng-config
+          persistentVolumeClaim:
+            claimName: searxng-config-pvc
+        - name: searxng-data
+          persistentVolumeClaim:
+            claimName: searxng-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: searxng
+spec:
+  selector:
+    app: searxng
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
