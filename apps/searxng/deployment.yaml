@@ -27,8 +27,8 @@ spec:
           env:
             - name: SEARXNG_PORT
               value: "8080"
-            - name: SEARXNG_REDIS_URL
-              value: redis://localhost:6379/0
+            # - name: SEARXNG_REDIS_URL
+            #   value: redis://localhost:6379/0
       restartPolicy: Always
       volumes:
         - name: searxng-config
