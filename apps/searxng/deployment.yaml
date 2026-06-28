@@ -32,8 +32,7 @@ spec:
       restartPolicy: Always
       volumes:
         - name: searxng-config
-          persistentVolumeClaim:
-            claimName: searxng-config
+          emptyDir: {}
         - name: searxng-data
           persistentVolumeClaim:
             claimName: searxng-data
