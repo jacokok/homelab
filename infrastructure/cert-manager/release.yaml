@@ -14,10 +14,6 @@ spec:
         name: jetstack
         namespace: cert-manager
       interval: 12h
-  chartRef:
-    kind: OCIRepository
-    name: cert-manager
-    namespace: cert-manager
   install:
     crds: CreateReplace
   upgrade:
