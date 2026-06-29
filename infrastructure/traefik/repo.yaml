@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: traefik-repo
-  namespace: kube-system
+  namespace: traefik
   labels:
     app.kubernetes.io/name: traefik-repo
 spec:

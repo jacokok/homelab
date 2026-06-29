@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: traefik
-  namespace: kube-system
+  namespace: traefik
 spec:
   chart:
     spec:
@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: traefik-repo
-        namespace: kube-system
+        namespace: traefik
       reconcileStrategy: ChartVersion
       version: "^39.0.0"
   values:
@@ -39,10 +39,12 @@ spec:
         port: 8000
         containerPort: 8000
         exposedPort: 80
+        nodePort: 30755
       websecure:
         port: 8443
         containerPort: 8443
         exposedPort: 443
+        nodePort: 31127
   install:
     crds: Create
     remediation:
