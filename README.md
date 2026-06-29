@@ -59,3 +59,9 @@ sops encrypt secret.yaml > test-secret.yaml
 sops decrypt test-secret.yaml
 kubeseal --cert=pub-sealed-secrets.pem --format=yaml < secret.yaml > sealed-secret.yaml
 ```
+
+### install k3s
+
+```bash
+curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644
+```

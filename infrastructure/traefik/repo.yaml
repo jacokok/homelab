@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: traefik-repo
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: traefik-repo
+spec:
+  interval: 1h
+  url: https://helm.traefik.io/traefik
