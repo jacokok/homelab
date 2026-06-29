@@ -39,12 +39,12 @@ spec:
         port: 8000
         containerPort: 8000
         exposedPort: 80
-        nodePort: 30755
+        nodePort: 31127
       websecure:
         port: 8443
         containerPort: 8443
         exposedPort: 443
-        nodePort: 31127
+        nodePort: 30755
   install:
     crds: Create
     remediation:
