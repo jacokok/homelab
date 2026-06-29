@@ -29,6 +29,11 @@ spec:
               value: "8080"
             - name: SEARXNG_VALKEY_URL
               value: redis://localhost:6379/0
+            - name: SEARXNG_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: searxng-secret
+                  key: SEARXNG_SECRET
         - name: valkey
           image: docker.io/valkey/valkey:8
           ports:

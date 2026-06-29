@@ -4,5 +4,6 @@ namespace: searxng
 resources:
   - namespace.yaml
   - config.yaml
+  - secrets.yaml
   - volume.yaml
   - deployment.yaml
