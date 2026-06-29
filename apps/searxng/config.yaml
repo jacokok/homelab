@@ -5,7 +5,7 @@ metadata:
 data:
   settings.yml: |
     server:
-      # secret_key: "changeme"  # Override with SEARXNG_SECRET env var
+      secret_key: "changeme"
       bind_address: "0.0.0.0"
       port: 8080
     search:
