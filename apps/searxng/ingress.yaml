@@ -9,6 +9,7 @@ spec:
     - kind: Rule
       match: Host(`searxng.doink.co.za`)
       middlewares:
+        - name: searxng-ipwhitelist
         - name: searxng-auth
       services:
         - name: searxng
