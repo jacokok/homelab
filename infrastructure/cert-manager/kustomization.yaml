@@ -5,3 +5,5 @@ resources:
   - namespace.yaml
   - repo.yaml
   - release.yaml
+  - secret.yaml
+  - issuer.yaml
