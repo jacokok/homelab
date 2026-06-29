@@ -45,7 +45,8 @@ spec:
       restartPolicy: Always
       volumes:
         - name: searxng-config
-          emptyDir: {}
+          configMap:
+            name: searxng-config
         - name: valkey-data
           persistentVolumeClaim:
             claimName: valkey-data
@@ -64,3 +65,4 @@ spec:
     - port: 8080
       targetPort: 8080
       protocol: TCP
+      nodePort: 38080
