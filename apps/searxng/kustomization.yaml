@@ -7,3 +7,4 @@ resources:
   - secrets.yaml
   - volume.yaml
   - deployment.yaml
+  - ingress.yaml
