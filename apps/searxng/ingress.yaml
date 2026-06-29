@@ -4,12 +4,12 @@ metadata:
   name: searxng
 spec:
   entryPoints:
-    - websecure
+    - web
   routes:
     - kind: Rule
       match: Host(`searxng.doink.co.za`)
+      middlewares:
+        - name: searxng-auth
       services:
         - name: searxng
           port: 8080
-  tls:
-    secretName: searxng-tls
