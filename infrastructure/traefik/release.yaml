@@ -45,10 +45,6 @@ spec:
         containerPort: 8443
         exposedPort: 443
         nodePort: 30755
-        proxyProtocol:
-          trustedIPs:
-            - "192.168.1.0/24"
-    accessLog: {}
   install:
     crds: Create
     remediation:
