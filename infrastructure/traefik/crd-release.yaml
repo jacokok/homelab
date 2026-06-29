@@ -6,13 +6,13 @@ metadata:
 spec:
   chart:
     spec:
-      chart: traefik-crd
+      chart: traefik-crds
       sourceRef:
         kind: HelmRepository
         name: traefik-repo
         namespace: kube-system
       reconcileStrategy: ChartVersion
-      version: "^39.0.0"
+      version: "^1.0.0"
   install:
     crds: Create
     remediation:
