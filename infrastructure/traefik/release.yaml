@@ -15,7 +15,7 @@ spec:
       version: "^39.0.0"
   values:
     image:
-      repository: docker.io/traefik
+      repository: traefik
     deployment:
       podAnnotations:
         prometheus.io/port: "8082"

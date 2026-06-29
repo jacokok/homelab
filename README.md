@@ -65,3 +65,25 @@ kubeseal --cert=pub-sealed-secrets.pem --format=yaml < secret.yaml > sealed-secr
 ```bash
 curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644
 ```
+
+### TODO
+
+- [ ] Setup ansible to install k3s
+- [ ] Ansible update
+- [ ] Ansible ssh
+- [ ] Ansible install packages
+- [ ] Ansible setup registries.yaml
+
+```bash
+sudo mkdir -p /etc/rancher/k3s
+sudo nano /etc/rancher/k3s/registries.yaml
+sudo systemctl restart k3s
+sudo systemctl restart k3s-agent
+```
+```yaml
+configs:
+  "index.docker.io":
+    auth:
+      username: "<YOUR_DOCKERHUB_USERNAME>"
+      password: "<YOUR_DOCKERHUB_TOKEN_OR_PASSWORD>"
+```
