@@ -8,7 +8,7 @@ spec:
   values:
     installCRDs: true
   chartRef:
-    kind: HelmRepository
+    kind: OCIRepository
     name: cert-manager-repo
     namespace: cert-manager
   install:
