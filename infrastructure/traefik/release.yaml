@@ -4,9 +4,6 @@ metadata:
   name: traefik
   namespace: kube-system
 spec:
-  dependsOn:
-    - name: traefik-crd
-      namespace: kube-system
   chart:
     spec:
       chart: traefik
