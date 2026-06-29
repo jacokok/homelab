@@ -5,8 +5,15 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  values:
-    installCRDs: true
+  chart:
+    spec:
+      chart: cert-manager
+      version: "1.20.x"
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+        namespace: cert-manager
+      interval: 12h
   chartRef:
     kind: OCIRepository
     name: cert-manager
@@ -16,3 +23,8 @@ spec:
   upgrade:
     crds: CreateReplace
   interval: 1h0m0s
+  values:
+    crds:
+      enabled: true
+      keep: true
+    replicaCount: 1

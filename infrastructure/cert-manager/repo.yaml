@@ -1,10 +1,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
+kind: HelmRepository
 metadata:
-  name: cert-manager
+  name: jetstack
   namespace: cert-manager
 spec:
   interval: 1h
-  url: oci://quay.io/jetstack/charts/cert-manager
-  ref:
-    semver: "*"
+  url: oci://quay.io/jetstack/charts
+  type: oci
