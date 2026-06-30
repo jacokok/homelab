@@ -1,0 +1,74 @@
+---
+# Install k3s on masters and workers using the official install script.
+# Mirrors the manual steps in k3s.md.
+#
+# Order is important: the master must be installed first so its node-token
+# can be read and handed to the workers as K3S_TOKEN.
+
+- name: Install k3s server on masters
+  hosts: k3s_masters
+  become: true
+  tasks:
+    - name: Install k3s server (with --disable traefik)
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="{{ k3s_server_exec_args }}" sh -s -
+      args:
+        creates: /usr/local/bin/k3s
+      environment:
+        # The script picks this up as additional exec args.
+        INSTALL_K3S_EXEC: "{{ k3s_server_exec_args }}"
+
+    - name: Ensure k3s is running
+      ansible.builtin.systemd:
+        name: k3s
+        enabled: true
+        state: started
+
+    - name: Taint master so it doesn't run regular workloads
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/kubectl
+          - taint
+          - nodes
+          - "{{ inventory_hostname }}"
+          - "{{ k3s_server_taint }}"
+          - --overwrite
+      register: taint_result
+      changed_when: "'created' in taint_result.stdout or 'not found' not in taint_result.stdout"
+      failed_when: false
+
+    - name: Read k3s node-token (for joining workers)
+      ansible.builtin.slurp:
+        path: /var/lib/rancher/k3s/server/node-token
+      register: k3s_node_token
+
+    - name: Expose the token to workers via hostvars
+      ansible.builtin.set_fact:
+        k3s_token: "{{ k3s_node_token['content'] | b64decode | trim }}"
+        cacheable: true
+
+
+- name: Install k3s agent on workers
+  hosts: k3s_workers
+  become: true
+  serial: 1
+  tasks:
+    - name: Get master token from a master host
+      ansible.builtin.set_fact:
+        k3s_token: "{{ hostvars[groups['k3s_masters'][0]]['k3s_token'] }}"
+
+    - name: Install k3s agent (joining master)
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | \
+          K3S_TOKEN={{ k3s_token }} \
+          K3S_URL=https://{{ groups['k3s_masters'][0] }}:6443 \
+          sh -s - --write-kubeconfig-mode 644
+      args:
+        creates: /usr/local/bin/k3s-agent
+      no_log: true
+
+    - name: Ensure k3s-agent is running
+      ansible.builtin.systemd:
+        name: k3s-agent
+        enabled: true
+        state: started

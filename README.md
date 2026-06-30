@@ -66,13 +66,23 @@ kubeseal --cert=pub-sealed-secrets.pem --format=yaml < secret.yaml > sealed-secr
 curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644
 ```
 
+### Provisioning (Ansible)
+
+Node provisioning is automated with ansible under [`ansible/`](./ansible). Setup is handled by [mise](./mise.toml).
+
+```bash
+cd ansible
+ansible-playbook playbooks/site.yml
+```
+
+See [`ansible/README.md`](./ansible/README.md) for details.
+
 ### TODO
 
-- [ ] Setup ansible to install k3s
-- [ ] Ansible update
-- [ ] Ansible ssh
-- [ ] Ansible install packages
-- [ ] Ansible setup registries.yaml
+- [x] Setup ansible to install k3s -> `ansible/playbooks/k3s.yml`
+- [x] Ansible update + install packages -> `ansible/playbooks/system.yml`
+- [x] Ansible setup registries.yaml -> `ansible/playbooks/registries.yml`
+- [ ] Ansible ssh: configure key-based auth + passwordless sudo via playbook
 
 ```bash
 sudo mkdir -p /etc/rancher/k3s

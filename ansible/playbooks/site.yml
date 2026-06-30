@@ -1,0 +1,8 @@
+---
+# Main entry point. Runs the full provisioning sequence.
+# Run individual playbooks to do just one part, e.g.:
+#   ansible-playbook playbooks/k3s.yml
+
+- import_playbook: system.yml
+- import_playbook: k3s.yml
+- import_playbook: registries.yml

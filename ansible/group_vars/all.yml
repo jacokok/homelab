@@ -1,0 +1,21 @@
+---
+# Shared variables for all nodes.
+# Put secrets (registry credentials, k3s token) in a vault-encrypted file:
+#   ansible-vault encrypt group_vars/all.yml
+# or keep them in a separate vault file like group_vars/vault.yml.
+
+ansible_user: doink
+
+# Become root for package installs / k3s service management.
+ansible_become: true
+ansible_become_password: "" # set via vault if sudo needs a password
+
+# Generic package set installed on every node (TODO: "Ansible install packages").
+common_packages:
+  - curl
+  - wget
+  - vim
+  - git
+  - htop
+  - ncdu
+  - open-iscsi # required by longhorn (see README)

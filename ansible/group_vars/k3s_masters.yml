@@ -1,0 +1,9 @@
+---
+# Variables for the k3s server (manager) node(s).
+
+# Extra flags passed to the k3s install script (INSTALL_K3S_EXEC).
+# Mirrors: curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644
+k3s_server_exec_args: "--disable traefik --write-kubeconfig-mode 644"
+
+# Keep the manager free of regular workloads (matches the manual taint in k3s.md).
+k3s_server_taint: "CriticalAddonsOnly=true:NoSchedule"

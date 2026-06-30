@@ -1,0 +1,24 @@
+---
+# System update, base packages, and iscsid (needed by longhorn).
+# Covers TODO: "Ansible update" and "Ansible install packages".
+
+- name: Update apt and install common packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Run apt update && upgrade
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+      when: ansible_facts['os_family'] == 'Debian'
+
+    # - name: Install common packages
+    #   ansible.builtin.apt:
+    #     name: "{{ common_packages }}"
+    #     state: present
+
+    # - name: Enable and start iscsid (for longhorn)
+    #   ansible.builtin.systemd:
+    #     name: iscsid
+    #     enabled: true
+    #     state: started
