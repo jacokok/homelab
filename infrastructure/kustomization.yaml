@@ -4,4 +4,4 @@ resources:
   - ./traefik
   - ./cert-manager
   - ./k8up
-  - ./kube-prometheus-stack
+  # - ./kube-prometheus-stack
