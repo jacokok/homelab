@@ -17,8 +17,8 @@
         name: "{{ common_packages }}"
         state: present
 
-    # - name: Enable and start iscsid (for longhorn)
-    #   ansible.builtin.systemd:
-    #     name: iscsid
-    #     enabled: true
-    #     state: started
+    - name: Enable and start iscsid (for longhorn)
+      ansible.builtin.systemd:
+        name: iscsid
+        enabled: true
+        state: started
