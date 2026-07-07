@@ -47,24 +47,30 @@
         k3s_token: "{{ k3s_node_token['content'] | b64decode | trim }}"
         cacheable: true
 
-
 - name: Install k3s agent on workers
   hosts: k3s_workers
   become: true
   serial: 1
   tasks:
     - name: Get master token from a master host
+      ansible.builtin.slurp:
+        path: /var/lib/rancher/k3s/server/node-token
+      delegate_to: "{{ groups['k3s_masters'][0] }}"
+      register: k3s_node_token
+      run_once: true
+
+    - name: Set k3s_token fact
       ansible.builtin.set_fact:
-        k3s_token: "{{ hostvars[groups['k3s_masters'][0]]['k3s_token'] }}"
+        k3s_token: "{{ k3s_node_token['content'] | b64decode | trim }}"
 
     - name: Install k3s agent (joining master)
       ansible.builtin.shell: |
         curl -sfL https://get.k3s.io | \
           K3S_TOKEN={{ k3s_token }} \
           K3S_URL=https://{{ groups['k3s_masters'][0] }}:6443 \
-          sh -s - --write-kubeconfig-mode 644
+          sh -s -
       args:
-        creates: /usr/local/bin/k3s-agent
+        creates: /etc/systemd/system/k3s-agent.service
       no_log: true
 
     - name: Ensure k3s-agent is running

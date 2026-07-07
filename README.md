@@ -73,6 +73,8 @@ Node provisioning is automated with ansible under [`ansible/`](./ansible). Setup
 ```bash
 cd ansible
 ansible-playbook playbooks/site.yml
+
+ansible-playbook ansible/playbooks/k3s.yml -l venus
 ```
 
 See [`ansible/README.md`](./ansible/README.md) for details.
