@@ -18,4 +18,5 @@ common_packages:
   - git
   - htop
   - ncdu
-  - open-iscsi # required by longhorn (see README)
+  - open-iscsi # required by longhorn
+  - cryptsetup # required by longhorn (encrypted volumes)

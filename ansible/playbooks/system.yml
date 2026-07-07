@@ -22,3 +22,14 @@
         name: iscsid
         enabled: true
         state: started
+
+    - name: Load dm_crypt kernel module (required by longhorn)
+      ansible.builtin.command:
+        cmd: modprobe dm_crypt
+        creates: /sys/module/dm_crypt
+
+    - name: Ensure dm_crypt loads on boot
+      ansible.builtin.copy:
+        content: dm_crypt
+        dest: /etc/modules-load.d/dm_crypt.conf
+        mode: "0644"

@@ -12,3 +12,5 @@ all:
           hosts:
             mercury:
               ansible_host: mercury
+            venus:
+              ansible_host: venus
