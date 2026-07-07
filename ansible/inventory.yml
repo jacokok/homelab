@@ -1,19 +1,14 @@
 ---
-# Edit these hostnames/IPs to match your homelab nodes.
-# Ansible uses the SSH user configured in group_vars/all.yml.
-
 all:
   children:
     k3s_cluster:
       children:
         k3s_masters:
           hosts:
-            # The node running the k3s server (manager). From k3s.md this is "earth".
             earth:
               ansible_host: earth
 
         k3s_workers:
           hosts:
-            # Add worker nodes here. k3s agents will join the master via K3S_URL.
-            # server2:
-            #   ansible_host: server2
+            mercury:
+              ansible_host: mercury
