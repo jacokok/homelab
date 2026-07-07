@@ -15,7 +15,7 @@ spec:
       version: v1.12.0
   values:
     defaultSettings:
-      defaultReplicaCount: "2"
+      defaultReplicaCount: "1"
       dataLocality: "best-effort"
       replicaAutoBalance: "best-effort"
       storageOverProvisioningPercentage: "500"
