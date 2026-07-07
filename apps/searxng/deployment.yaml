@@ -37,13 +37,7 @@ spec:
           image: docker.io/valkey/valkey:8
           ports:
             - containerPort: 6379
-          volumeMounts:
-            - mountPath: /data
-              name: valkey-data
           args:
-            - --save
-            - "60"
-            - "1"
             - --loglevel
             - warning
       restartPolicy: Always
@@ -51,9 +45,6 @@ spec:
         - name: searxng-config
           configMap:
             name: searxng-config
-        - name: valkey-data
-          persistentVolumeClaim:
-            claimName: valkey-data
 ---
 apiVersion: v1
 kind: Service

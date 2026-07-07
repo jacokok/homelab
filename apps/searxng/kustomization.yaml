@@ -5,7 +5,6 @@ resources:
   - namespace.yaml
   - config.yaml
   - secrets.yaml
-  - volume.yaml
   - deployment.yaml
   - ingress.yaml
   - certificate.yaml
