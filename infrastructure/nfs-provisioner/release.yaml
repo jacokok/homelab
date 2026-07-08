@@ -16,7 +16,7 @@ spec:
   values:
     nfs:
       server: nas.lan
-      path: /volume1/files/
+      path: /volume1/files
       mountOptions:
         - nfsvers=4
         - soft
