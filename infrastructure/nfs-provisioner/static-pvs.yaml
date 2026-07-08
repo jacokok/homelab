@@ -1,0 +1,80 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-series
+spec:
+  capacity:
+    storage: 10Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.lan
+    path: /volume1/files/series
+    readOnly: false
+  mountOptions:
+    - nfsvers=4
+    - soft
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-movies
+spec:
+  capacity:
+    storage: 10Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.lan
+    path: /volume1/files/movies
+    readOnly: false
+  mountOptions:
+    - nfsvers=4
+    - soft
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-documents
+spec:
+  capacity:
+    storage: 1Ti
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.lan
+    path: /volume1/files/documents
+    readOnly: false
+  mountOptions:
+    - nfsvers=4
+    - soft
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-books
+spec:
+  capacity:
+    storage: 500Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.lan
+    path: /volume1/files/books
+    readOnly: false
+  mountOptions:
+    - nfsvers=4
+    - soft

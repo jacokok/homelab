@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: nfs-subdir-provisioner-repo
+  namespace: nfs-provisioner
+  labels:
+    app.kubernetes.io/name: nfs-subdir-provisioner-repo
+spec:
+  interval: 1h0m0s
+  url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner

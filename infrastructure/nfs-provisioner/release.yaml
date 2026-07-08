@@ -1,0 +1,44 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nfs-subdir-provisioner
+  namespace: nfs-provisioner
+spec:
+  chart:
+    spec:
+      chart: nfs-subdir-external-provisioner
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: nfs-subdir-provisioner-repo
+      version: 4.0.18
+  values:
+    nfs:
+      server: nas.lan
+      path: /volume1/files/
+      mountOptions:
+        - nfsvers=4
+        - soft
+    storageClass:
+      name: nfs
+      defaultClass: false
+      reclaimPolicy: Delete
+      allowVolumeExpansion: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  interval: 1h0m0s
+  timeout: 10m
