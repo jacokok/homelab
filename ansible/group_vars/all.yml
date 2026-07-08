@@ -20,3 +20,4 @@ common_packages:
   - ncdu
   - open-iscsi # required by longhorn
   - cryptsetup # required by longhorn (encrypted volumes)
+  - nfs-common # required by longhorn (RWX volumes)
