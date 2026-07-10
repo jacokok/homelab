@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: seerr-repo
+  labels:
+    app.kubernetes.io/name: seerr-repo
+spec:
+  interval: 1h0m0s
+  url: oci://ghcr.io/seerr-team/seerr/seerr-chart
+  type: oci

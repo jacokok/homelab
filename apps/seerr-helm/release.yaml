@@ -1,0 +1,46 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: seerr
+  namespace: seerr
+spec:
+  chart:
+    spec:
+      chart: seerr-chart
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: seerr-repo
+      version: 3.7.x
+  values:
+    timezone: Africa/Johannesburg
+
+    config:
+      persistence:
+        size: 1Gi
+        storageClass: longhorn
+
+    extraEnv:
+      - name: TZ
+        value: Africa/Johannesburg
+
+    probes:
+      livenessProbe:
+        initialDelaySeconds: 20
+        periodSeconds: 15
+        timeoutSeconds: 3
+
+    resources: {}
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  interval: 1h0m0s
+  timeout: 15m
