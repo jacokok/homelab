@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: longhorn-restorer
+  namespace: seerr
+spec:
+  containers:
+  - name: web-server
+    image: alpine
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /data
+      name: restore-volume
+  volumes:
+  - name: restore-volume
+    persistentVolumeClaim:
+      claimName: seerr-seerr-chart-config # The name of the PVC you created in Step 2
