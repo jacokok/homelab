@@ -7,3 +7,4 @@ resources:
   - ./longhorn
   - ./nfs-provisioner
   # - ./kube-prometheus-stack
+  - ./cloudnative-pg

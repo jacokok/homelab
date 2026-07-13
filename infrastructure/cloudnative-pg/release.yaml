@@ -1,0 +1,35 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudnative-pg
+  namespace: cloudnative-pg
+spec:
+  chart:
+    spec:
+      chart: cloudnative-pg
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cloudnative-pg-repo
+        namespace: cloudnative-pg
+      version: "^0.23.0"
+  values:
+    # Configure the operator here as needed
+    config:
+      # Enable monitoring (requires kube-prometheus-stack)
+      # enablePodMonitor: true
+      # Set cluster-wide default image
+      # clusterDefaultImage: ghcr.io/cloudnative-pg/postgresql:17
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  interval: 1h
+  timeout: 15m
