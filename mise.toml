@@ -2,7 +2,12 @@
 python = "3.12"
 "pipx:ansible-core" = "latest"
 "pipx:ansible-navigator" = "latest"
+"krew:tree" = "latest"
+"krew:cnpg" = "latest"
 
 [env]
 # Put ansible config / inventory discovery on the project root for ansible/
 ANSIBLE_CONFIG = "{{ config_root }}/ansible/ansible.cfg"
+
+[plugins]
+krew = "https://github.com/soupglasses/mise-krew"

@@ -99,3 +99,15 @@ configs:
       username: "<YOUR_DOCKERHUB_USERNAME>"
       password: "<YOUR_DOCKERHUB_TOKEN_OR_PASSWORD>"
 ```
+
+## DB Restore
+
+```bash
+kubectl cnpg import ha-db -n ha \
+  --from-dbname club \
+  --from-host doink-pc \
+  --from-user club \
+  --from-database club \
+  --all-databases \
+  --all-roles
+```
