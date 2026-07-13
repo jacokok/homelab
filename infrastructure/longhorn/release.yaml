@@ -15,6 +15,7 @@ spec:
       version: v1.12.0
   values:
     persistence:
+      defaultClass: false
       defaultClassReplicaCount: 1
     longhornUI:
       replicas: 1

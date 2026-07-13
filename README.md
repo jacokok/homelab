@@ -100,14 +100,13 @@ configs:
       password: "<YOUR_DOCKERHUB_TOKEN_OR_PASSWORD>"
 ```
 
-## DB Restore
+## DB Restore / Import
+
+### From a live source
 
 ```bash
-kubectl cnpg import ha-db -n ha \
-  --from-dbname club \
-  --from-host doink-pc \
-  --from-user club \
-  --from-database club \
-  --all-databases \
-  --all-roles
+PGPASSWORD="pass" pg_dump -h source -U user -d db -C --no-owner --no-acl | kubectl cnpg psql clusterName -n namespace -- -f -
+cat dump.sql | kubectl cnpg psql clusterName -n namespace -- -f -
+
+pg_restore -f - dump.dump | kubectl cnpg psql clusterName -n namespace -- -f -
 ```
