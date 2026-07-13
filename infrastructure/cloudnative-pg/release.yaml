@@ -14,13 +14,7 @@ spec:
         name: cloudnative-pg-repo
         namespace: cloudnative-pg
       version: "^0.23.0"
-  values:
-    # Configure the operator here as needed
-    config:
-      # Enable monitoring (requires kube-prometheus-stack)
-      # enablePodMonitor: true
-      # Set cluster-wide default image
-      # clusterDefaultImage: ghcr.io/cloudnative-pg/postgresql:17
+  values: {}
   install:
     crds: Create
     remediation:
