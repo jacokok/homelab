@@ -102,11 +102,13 @@ configs:
 
 ## DB Restore / Import
 
-### From a live source
-
 ```bash
-PGPASSWORD="pass" pg_dump -h source -U user -d db -C --no-owner --no-acl | kubectl cnpg psql clusterName -n namespace -- -f -
-cat dump.sql | kubectl cnpg psql clusterName -n namespace -- -f -
+PGPASSWORD="pass" psql -h localhost -p 5432 -U ha -d postgres -c "DROP DATABASE ha;"
+kubectl exec -n ha -c postgres pod/ha-db-1 -- psql -U postgres -c "CREATE DATABASE ha OWNER ha;"
 
-pg_restore -f - dump.dump | kubectl cnpg psql clusterName -n namespace -- -f -
+# Dump db
+PGPASSWORD="pass" pg_dump -h source -U user -d db -Fc --no-owner --no-acl > db.dump
+# Port forward the db pod
+# Restore
+PGOPTIONS="-c maintenance_work_mem=512MB" PGPASSWORD="pass" pg_restore -h localhost -p 5432 -U ha -d ha -Fc ha.dump
 ```
