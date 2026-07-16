@@ -7,5 +7,5 @@ metadata:
     app.kubernetes.io/name: databasus-repo
 spec:
   interval: 1h0m0s
-  url: oci://ghcr.io/databasus/charts/databasus
+  url: oci://ghcr.io/databasus/charts
   type: oci
