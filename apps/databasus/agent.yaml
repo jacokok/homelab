@@ -12,11 +12,33 @@ spec:
       labels:
         app: databasus-agent
     spec:
+      initContainers:
+        - name: download-agent
+          image: curlimages/curl:latest
+          command:
+            - sh
+            - -c
+            - |
+              curl -L -o /agent/verification-agent \
+                "http://databasus-service:4005/api/v1/system/verification-agent?arch=amd64" && \
+              chmod +x /agent/verification-agent
+          volumeMounts:
+            - name: agent-bin
+              mountPath: /agent
       containers:
         - name: agent-container
-          image: databasus/databasus-agent:latest
+          image: debian:bookworm-slim
+          command:
+            - /agent/verification-agent
           env:
             - name: AGENT_TOKEN
               value: 47d3b53fcfd64f998eb4d3a3eea74994
             - name: AGENT_ID
               value: 257d9212-03d7-4cda-8535-5a3bdf7aa328
+          volumeMounts:
+            - name: agent-bin
+              mountPath: /agent
+              readOnly: true
+      volumes:
+        - name: agent-bin
+          emptyDir: {}
