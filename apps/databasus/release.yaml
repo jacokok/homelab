@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: databasus
+  namespace: databasus
+spec:
+  chart:
+    spec:
+      chart: databasus
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: databasus-repo
+      version: 3.x
+  values:
+    timezone: Africa/Johannesburg
+
+    extraEnv:
+      - name: TZ
+        value: Africa/Johannesburg
+
+    persistence:
+      size: 10Gi
+      storageClassName: longhorn
+
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "500m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+    serviceAccount:
+      automountServiceAccountToken: false
+
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  interval: 1h0m0s
+  timeout: 15m
