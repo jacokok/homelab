@@ -4,6 +4,9 @@ metadata:
   name: databasus-agent
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: databasus-agent
@@ -12,43 +15,48 @@ spec:
       labels:
         app: databasus-agent
     spec:
-      initContainers:
-        - name: download-agent
-          image: curlimages/curl:latest
+      containers:
+        - name: agent
+          image: docker:28-dind
+          securityContext:
+            privileged: true
           command:
-            - sh
+            - /bin/sh
             - -c
             - |
+              apk add --no-cache curl >/dev/null 2>&1
+
+              echo "Starting Docker daemon..."
+              dockerd &>/tmp/dockerd.log &
+
+              echo "Waiting for Docker daemon..."
+              for i in $(seq 1 30); do
+                if docker info &>/dev/null; then
+                  echo "Docker daemon ready"
+                  break
+                fi
+                echo "Waiting... ($i/30)"
+                sleep 2
+              done
+
               echo "Downloading verification agent from databasus-service:4005..."
               for i in $(seq 1 30); do
-                if curl -sf -o /agent/verification-agent \
+                if curl -sf -o /tmp/verification-agent \
                   "http://databasus-service:4005/api/v1/system/verification-agent?arch=amd64"; then
-                  chmod +x /agent/verification-agent && \
+                  chmod +x /tmp/verification-agent && \
                   echo "Download complete" && \
-                  exit 0
+                  exec /tmp/verification-agent run \
+                    -databasus-host=http://databasus-service:4005 \
+                    -agent-id=257d9212-03d7-4cda-8535-5a3bdf7aa328 \
+                    -token=47d3b53fcfd64f998eb4d3a3eea74994 \
+                    -max-concurrent-jobs=1 \
+                    -max-cpu=2 \
+                    -max-ram-mb=1024 \
+                    -max-disk-gb=10 \
+                    -allow-insecure-http
                 fi
                 echo "Attempt $i/30 - not reachable yet, waiting 5s..."
                 sleep 5
               done
               echo "Failed to reach databasus after 30 attempts"
               exit 1
-          volumeMounts:
-            - name: agent-bin
-              mountPath: /agent
-      containers:
-        - name: agent-container
-          image: debian:bookworm-slim
-          command:
-            - /agent/verification-agent
-          env:
-            - name: AGENT_TOKEN
-              value: 47d3b53fcfd64f998eb4d3a3eea74994
-            - name: AGENT_ID
-              value: 257d9212-03d7-4cda-8535-5a3bdf7aa328
-          volumeMounts:
-            - name: agent-bin
-              mountPath: /agent
-              readOnly: true
-      volumes:
-        - name: agent-bin
-          emptyDir: {}
