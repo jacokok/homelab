@@ -33,20 +33,16 @@ spec:
     serviceAccount:
       automountServiceAccountToken: false
 
-    # Disabled temporarily: the health endpoint returns 503 until a
-    # verification agent checks in, but the agent can't download its
-    # binary until the service has endpoints (chicken-and-egg loop).
-    # readinessProbe:
-    #   initialDelaySeconds: 10
-    #   periodSeconds: 10
-    #   failureThreshold: 5
-
-    # Also relax liveness so the pod doesn't get killed while the
-    # initial agent connects
+    # Disabled health checks to break chicken-and-egg loop:
+    # health endpoint returns 503 until an agent checks in,
+    # but the agent can't download until the service has endpoints.
+    # Re-enable once the agent connects successfully.
+    readinessProbe:
+      exec:
+        command: ["true"]
     livenessProbe:
-      initialDelaySeconds: 600
-      periodSeconds: 30
-      failureThreshold: 30
+      exec:
+        command: ["true"]
 
   install:
     crds: Create
