@@ -19,9 +19,21 @@ spec:
             - sh
             - -c
             - |
-              curl -L -o /agent/verification-agent \
-                "http://databasus-service:4005/api/v1/system/verification-agent?arch=amd64" && \
-              chmod +x /agent/verification-agent
+              echo "Waiting for databasus-service:4005 to become available..."
+              for i in $(seq 1 30); do
+                if curl -sfo /dev/null "http://databasus-service:4005/api/v1/system/health" 2>/dev/null; then
+                  echo "databasus is ready, downloading agent..."
+                  curl -L -o /agent/verification-agent \
+                    "http://databasus-service:4005/api/v1/system/verification-agent?arch=amd64" && \
+                  chmod +x /agent/verification-agent && \
+                  echo "Download complete" && \
+                  exit 0
+                fi
+                echo "Attempt $i/30 - not ready yet, waiting 5s..."
+                sleep 5
+              done
+              echo "Failed to connect to databasus after 30 attempts"
+              exit 1
           volumeMounts:
             - name: agent-bin
               mountPath: /agent
