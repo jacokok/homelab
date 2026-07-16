@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbackup
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dbackup
+  template:
+    metadata:
+      labels:
+        app: dbackup
+    spec:
+      containers:
+        - name: dbackup
+          image: skyfay/dbackup:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: dbackup-env
+          volumeMounts:
+            - mountPath: /data
+              name: dbackup-data
+      volumes:
+        - name: dbackup-data
+          persistentVolumeClaim:
+            claimName: dbackup-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbackup
+spec:
+  selector:
+    app: dbackup
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
