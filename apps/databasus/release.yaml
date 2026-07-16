@@ -14,8 +14,6 @@ spec:
         name: databasus-repo
       version: 3.x
   values:
-    timezone: Africa/Johannesburg
-
     extraEnv:
       - name: TZ
         value: Africa/Johannesburg
@@ -34,6 +32,16 @@ spec:
 
     serviceAccount:
       automountServiceAccountToken: false
+
+    livenessProbe:
+      initialDelaySeconds: 600
+      periodSeconds: 30
+      failureThreshold: 10
+
+    readinessProbe:
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 5
 
   install:
     crds: Create
