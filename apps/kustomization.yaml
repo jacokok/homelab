@@ -4,5 +4,4 @@ resources:
   - ./searxng
   - ./seerr
   - ./ha
-  - ./databasus
   - ./dbackup
