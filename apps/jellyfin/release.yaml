@@ -1,0 +1,67 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+spec:
+  chart:
+    spec:
+      chart: jellyfin
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: jellyfin
+        namespace: jellyfin
+      version: 3.2.0
+  interval: 1h
+  timeout: 15m
+  install:
+    crds: Create
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    force: true
+  values:
+    image:
+      tag: 10.11.11
+    service:
+      type: ClusterIP
+      port: 8096
+    ingress:
+      enabled: false
+    jellyfin:
+      env:
+        - name: JELLYFIN_PublishedServerUrl
+          value: jellyfin.doink.co.za
+    persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin-config
+      media:
+        enabled: false
+      cache:
+        enabled: false
+    volumes:
+      - name: files
+        persistentVolumeClaim:
+          claimName: files
+    volumeMounts:
+      - name: files
+        mountPath: /external/series
+        subPath: series
+      - name: files
+        mountPath: /external/movies
+        subPath: movies
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: NotIn
+                  values:
+                    - earth
