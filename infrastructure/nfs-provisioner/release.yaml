@@ -42,6 +42,6 @@ spec:
     force: true
     # Client-side apply so --force can delete+recreate the immutable
     # provisioner PV on future upgrades (SSA fails on the immutable field)
-    enableServerSideApply: false
+    serverSideApply: false
   interval: 1h0m0s
   timeout: 10m
