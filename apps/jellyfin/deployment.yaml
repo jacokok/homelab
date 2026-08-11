@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      # Pin to the node that has the /dev/dri device. Label it with:
+      #   kubectl label node <gpu-node> gpu-node=true
+      nodeSelector:
+        gpu-node: "true"
+      # Mirrors `group_add: ["106"]` from the compose config: adds the host
+      # `render` group to the pod so it can access /dev/dri/renderD128 for
+      # hardware transcoding. Verify the GID on the node with `getent group
+      # render` and adjust if it differs from 106.
+      securityContext:
+        supplementalGroups:
+          - 106
+      containers:
+        - name: jellyfin
+          image: docker.io/jellyfin/jellyfin:10.11.11
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: jellyfin.doink.co.za
+          ports:
+            - name: http
+              containerPort: 8096
+              protocol: TCP
+            - name: discovery
+              containerPort: 7359
+              protocol: UDP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: series
+              mountPath: /external/series
+            - name: movies
+              mountPath: /external/movies
+            - name: dri
+              mountPath: /dev/dri
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+        - name: series
+          persistentVolumeClaim:
+            claimName: series
+        - name: movies
+          persistentVolumeClaim:
+            claimName: movies
+        # Mirrors `devices: /dev/dri/renderD128` from the compose config.
+        - name: dri
+          hostPath:
+            path: /dev/dri
+            type: Directory
