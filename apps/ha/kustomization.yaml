@@ -4,3 +4,4 @@ namespace: ha
 resources:
   - namespace.yaml
   - db.yaml
+  - service.yaml
