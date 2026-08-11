@@ -3,6 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: seerr-repo
+  namespace: seerr
   labels:
     app.kubernetes.io/name: seerr-repo
 spec:

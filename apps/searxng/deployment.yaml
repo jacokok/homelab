@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: searxng
-          image: docker.io/searxng/searxng:latest
+          image: docker.io/searxng/searxng:2026.8.10-0a118066d
           ports:
             - containerPort: 8080
           volumeMounts:
@@ -34,7 +34,7 @@ spec:
                   name: searxng-secret
                   key: SEARXNG_SECRET
         - name: valkey
-          image: docker.io/valkey/valkey:8
+          image: docker.io/valkey/valkey:8.1.9
           ports:
             - containerPort: 6379
           args:

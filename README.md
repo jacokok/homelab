@@ -60,6 +60,18 @@ sops decrypt test-secret.yaml
 kubeseal --cert=pub-sealed-secrets.pem --format=yaml < secret.yaml > sealed-secret.yaml
 ```
 
+### Dependency Updates (Renovate)
+
+Dependency management is handled by [Renovate](https://docs.renovatebot.com/) (config: `renovate.json`). Flux auto-updates are disabled: HelmRelease chart versions are pinned exactly and git-based sources track release tags instead of branches.
+
+- **Minor & patch updates** (chart versions, container image tags) are auto-merged by Renovate.
+- **Major version updates** are opened as PRs for manual review.
+- Flux itself (`cluster/flux-system/gotk-components.yaml`) is also updated by Renovate.
+
+Install the Renovate GitHub App on this repo (or run self-hosted) with write permissions for branches/PRs/merges.
+
+Flux picks up merged changes automatically from the `main` branch.
+
 ### install k3s
 
 ```bash

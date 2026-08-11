@@ -1,0 +1,43 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Flux/GitOps dependency updates: auto-merge minor & patch updates, open PRs for major version updates.",
+    "Flux auto-updates (HelmRelease semver ranges, git branch tracking) are disabled; Renovate drives all changes."
+  ],
+  "extends": ["config:recommended"],
+  "rangeStrategy": "pin",
+  "dependencyDashboard": true,
+  "flux": {
+    "managerFilePatterns": ["/\\.ya?ml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/(?:^|/)(?:deployment|statefulset|daemonset|manifests|pod|job|cronjob)\\.ya?ml$/"
+    ]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "CNPG postgres image in Cluster CR (uses imageName instead of image)",
+      "fileMatch": ["apps/ha/db\\.ya?ml$"],
+      "matchStrings": [
+        "imageName:\\s+ghcr\\.io/cloudnative-pg/postgresql:(?<currentValue>[^\\s\"']+)"
+      ],
+      "depNameTemplate": "ghcr.io/cloudnative-pg/postgresql",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["major-update"]
+    }
+  ]
+}
