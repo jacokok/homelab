@@ -12,7 +12,7 @@ spec:
         name: traefik-repo
         namespace: traefik
       reconcileStrategy: ChartVersion
-      version: 39.0.0
+      version: 39.0.9
   values:
     image:
       repository: traefik
