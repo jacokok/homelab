@@ -139,7 +139,7 @@ spec:
           env:
             - name: ADDRESS
               value: /var/lib/csi/sockets/pluginproxy/csi.sock
-          image: registry.k8s.io/sig-storage/csi-provisioner:v3.6.4
+          image: registry.k8s.io/sig-storage/csi-provisioner:v6.3.0
           imagePullPolicy: Always
           name: csi-provisioner
           resources: {}
