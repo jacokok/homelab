@@ -19,7 +19,9 @@
     {
       "customType": "regex",
       "description": "CNPG postgres image in Cluster CR (uses imageName instead of image)",
-      "fileMatch": ["apps/ha/db\\.ya?ml$"],
+      "managerFilePatterns": [
+        "/apps/ha/db\\.ya?ml$/"
+      ],
       "matchStrings": [
         "imageName:\\s+ghcr\\.io/cloudnative-pg/postgresql:(?<currentValue>[^\\s\"']+)"
       ],
