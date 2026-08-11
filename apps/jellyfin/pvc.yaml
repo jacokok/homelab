@@ -1,5 +1,4 @@
 ---
-# Jellyfin config / metadata / cache.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -14,30 +13,15 @@ spec:
     requests:
       storage: 10Gi
 ---
-# Media libraries, served from the NFS share (nfs-subdir provisioner).
-# The provisioner creates a subdirectory under the NAS share
-# (/volume1/files) using the pattern <namespace>-<pvc-name>, i.e. these
-# resolve to /volume1/files/jellyfin-series and /volume1/files/jellyfin-movies.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: series
+  name: files
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs
+  storageClassName: ""
+  volumeName: nfs-files
   resources:
     requests:
-      storage: 5Ti
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: movies
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs
-  resources:
-    requests:
-      storage: 5Ti
+      storage: 10Ti

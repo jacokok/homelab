@@ -15,14 +15,8 @@ spec:
       labels:
         app: jellyfin
     spec:
-      # Pin to the node that has the /dev/dri device. Label it with:
-      #   kubectl label node <gpu-node> gpu-node=true
       nodeSelector:
         gpu-node: "true"
-      # Mirrors `group_add: ["106"]` from the compose config: adds the host
-      # `render` group to the pod so it can access /dev/dri/renderD128 for
-      # hardware transcoding. Verify the GID on the node with `getent group
-      # render` and adjust if it differs from 106.
       securityContext:
         supplementalGroups:
           - 106
@@ -42,23 +36,21 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: series
+            - name: files
               mountPath: /external/series
-            - name: movies
+              subPath: series
+            - name: files
               mountPath: /external/movies
+              subPath: movies
             - name: dri
               mountPath: /dev/dri
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: jellyfin-config
-        - name: series
+        - name: files
           persistentVolumeClaim:
-            claimName: series
-        - name: movies
-          persistentVolumeClaim:
-            claimName: movies
-        # Mirrors `devices: /dev/dri/renderD128` from the compose config.
+            claimName: files
         - name: dri
           hostPath:
             path: /dev/dri
