@@ -45,18 +45,17 @@ spec:
         enabled: false
       cache:
         enabled: false
-    # Hardware acceleration (see https://jellyfin.org/docs/general/installation/advanced/kubernetes/#hardware-acceleration)
-    # AMD RX 6600 -> VA-API via /dev/dri/renderD128. Requires a node with the GPU (earth).
-    # NOTE: the docs' gpu.intel.com/i915 limit is omitted - it needs the Intel device plugin and this is an AMD card.
-    securityContext:
-      privileged: true
+    # No hardware acceleration: worker nodes (mercury/venus) have no /dev/dri.
+    # Jellyfin falls back to software transcoding.
+    # To enable HW transcoding later, add a node with a GPU and use:
+    #   securityContext: { privileged: true }
+    #   volumes: [{name: dri, hostPath: {path: /dev/dri}}]
+    #   volumeMounts: [{name: dri, mountPath: /dev/dri}]
+    # (see https://jellyfin.org/docs/general/installation/advanced/kubernetes/#hardware-acceleration)
     volumes:
       - name: files
         persistentVolumeClaim:
           claimName: files
-      - name: dri
-        hostPath:
-          path: /dev/dri
     volumeMounts:
       - name: files
         mountPath: /external/series
@@ -64,14 +63,12 @@ spec:
       - name: files
         mountPath: /external/movies
         subPath: movies
-      - name: dri
-        mountPath: /dev/dri
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
                 - key: kubernetes.io/hostname
-                  operator: In
+                  operator: NotIn
                   values:
                     - earth
