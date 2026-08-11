@@ -45,13 +45,6 @@ spec:
         enabled: false
       cache:
         enabled: false
-    # No hardware acceleration: worker nodes (mercury/venus) have no /dev/dri.
-    # Jellyfin falls back to software transcoding.
-    # To enable HW transcoding later, add a node with a GPU and use:
-    #   securityContext: { privileged: true }
-    #   volumes: [{name: dri, hostPath: {path: /dev/dri}}]
-    #   volumeMounts: [{name: dri, mountPath: /dev/dri}]
-    # (see https://jellyfin.org/docs/general/installation/advanced/kubernetes/#hardware-acceleration)
     volumes:
       - name: files
         persistentVolumeClaim:
