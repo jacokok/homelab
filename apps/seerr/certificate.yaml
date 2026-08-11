@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: seerr-tls
+  namespace: seerr
+spec:
+  secretName: seerr-tls
+  commonName: seerr.doink.co.za
+  dnsNames:
+    - seerr.doink.co.za
+  issuerRef:
+    name: cloudflare-issuer
+    kind: ClusterIssuer

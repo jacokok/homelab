@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - repo.yaml
   - release.yaml
-  # - ingress.yaml
+  - certificate.yaml
+  - ingress.yaml
