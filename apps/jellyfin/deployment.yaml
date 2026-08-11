@@ -15,15 +15,15 @@ spec:
       labels:
         app: jellyfin
     spec:
-      nodeSelector:
-        gpu-node: "true"
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: CriticalAddonsOnly
-          operator: Exists
-          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - earth
       securityContext:
         supplementalGroups:
           - 106
@@ -49,8 +49,6 @@ spec:
             - name: files
               mountPath: /external/movies
               subPath: movies
-            - name: dri
-              mountPath: /dev/dri
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -58,7 +56,3 @@ spec:
         - name: files
           persistentVolumeClaim:
             claimName: files
-        - name: dri
-          hostPath:
-            path: /dev/dri
-            type: Directory
