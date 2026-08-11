@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      nodeSelector:
+        gpu-node: "true"
+      securityContext:
+        supplementalGroups:
+          - 106
+      containers:
+        - name: jellyfin
+          image: docker.io/jellyfin/jellyfin:10.11.11
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: jellyfin.doink.co.za
+          ports:
+            - name: http
+              containerPort: 8096
+              protocol: TCP
+            - name: discovery
+              containerPort: 7359
+              protocol: UDP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: files
+              mountPath: /external/series
+              subPath: series
+            - name: files
+              mountPath: /external/movies
+              subPath: movies
+            - name: dri
+              mountPath: /dev/dri
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+        - name: files
+          persistentVolumeClaim:
+            claimName: files
+        - name: dri
+          hostPath:
+            path: /dev/dri
+            type: Directory
