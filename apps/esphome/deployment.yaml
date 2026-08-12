@@ -37,14 +37,17 @@ kind: Service
 metadata:
   name: esphome
 spec:
+  type: NodePort
   selector:
     app: esphome
   ports:
     - name: dashboard
       port: 6052
       targetPort: 6052
+      nodePort: 32652
       protocol: TCP
     - name: api
       port: 6053
       targetPort: 6053
+      nodePort: 32653
       protocol: TCP
