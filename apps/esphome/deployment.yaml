@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esphome
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: esphome
+  template:
+    metadata:
+      labels:
+        app: esphome
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: esphome
+          image: docker.io/esphome/esphome:2026.7.4
+          ports:
+            - containerPort: 6052
+            - containerPort: 6053
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      restartPolicy: Always
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: esphome-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: esphome
+spec:
+  selector:
+    app: esphome
+  ports:
+    - name: dashboard
+      port: 6052
+      targetPort: 6052
+      protocol: TCP
+    - name: api
+      port: 6053
+      targetPort: 6053
+      protocol: TCP

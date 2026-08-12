@@ -6,3 +6,4 @@ resources:
   - ./ha
   - ./dbackup
   - ./jellyfin
+  - ./esphome
