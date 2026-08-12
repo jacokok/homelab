@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## General
+
+- Do not add comments unless absolutely necessary.
+
 ## Fluxcd
 
 - This project uses fluxcd to manage the deployment of applications and infrastructure in a GitOps manner. Fluxcd continuously monitors the Git repository for changes and applies them to the cluster automatically.
