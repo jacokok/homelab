@@ -7,3 +7,4 @@ resources:
   - ./dbackup
   - ./jellyfin
   - ./esphome
+  - ./go2rtc
