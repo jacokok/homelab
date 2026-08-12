@@ -4,6 +4,7 @@ python = "3.14.7"
 "pipx:ansible-navigator" = "latest"
 "krew:tree" = "latest"
 "krew:cnpg" = "latest"
+yamllint = "latest"
 
 [env]
 # Put ansible config / inventory discovery on the project root for ansible/
