@@ -63,6 +63,31 @@
       ansible.builtin.set_fact:
         k3s_token: "{{ k3s_node_token['content'] | b64decode | trim }}"
 
+    - name: Ensure k3s config directory exists
+      ansible.builtin.file:
+        path: /etc/rancher/k3s
+        state: directory
+        mode: "0755"
+
+    - name: Write k3s agent config with node labels
+      ansible.builtin.copy:
+        dest: /etc/rancher/k3s/config.yaml
+        mode: "0644"
+        content: |
+          node-label:
+          {% for label in k3s_node_labels %}
+            - "{{ label }}"
+          {% endfor %}
+      register: k3s_agent_config_written
+      when: k3s_node_labels | length > 0
+
+    - name: Remove k3s agent config when no node labels are set
+      ansible.builtin.file:
+        path: /etc/rancher/k3s/config.yaml
+        state: absent
+      register: k3s_agent_config_removed
+      when: k3s_node_labels | length == 0
+
     - name: Install k3s agent (joining master)
       ansible.builtin.shell: |
         curl -sfL https://get.k3s.io | \
@@ -78,3 +103,9 @@
         name: k3s-agent
         enabled: true
         state: started
+
+    - name: Restart k3s-agent to apply node labels
+      ansible.builtin.systemd:
+        name: k3s-agent
+        state: restarted
+      when: k3s_agent_config_written is changed or k3s_agent_config_removed is changed

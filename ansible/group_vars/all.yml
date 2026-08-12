@@ -21,3 +21,6 @@ common_packages:
   - open-iscsi # required by longhorn
   - cryptsetup # required by longhorn (encrypted volumes)
   - nfs-common # required by longhorn (RWX volumes)
+
+# Node labels applied via /etc/rancher/k3s/config.yaml (node-label) on workers.
+k3s_node_labels: []

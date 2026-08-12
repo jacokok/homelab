@@ -12,5 +12,7 @@ all:
           hosts:
             mercury:
               ansible_host: mercury
+              k3s_node_labels:
+                - gpu-dri=true
             venus:
               ansible_host: venus
