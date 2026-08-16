@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: papra
 resources:
   - namespace.yaml
-  - secrets.yaml
+  - secret.yaml
   - pvc.yaml
   - deployment.yaml
