@@ -4,4 +4,3 @@ resources:
   - namespace.yaml
   - repo.yaml
   - release.yaml
-  - static-pvs.yaml

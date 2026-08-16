@@ -56,7 +56,6 @@ spec:
               name: papra-app-data
             - mountPath: /app/documents
               name: papra-documents
-              subPath: documents
       restartPolicy: Always
       volumes:
         - name: papra-app-data

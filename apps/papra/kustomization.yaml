@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - secret.yaml
   - pvc.yaml
+  - pvs.yaml
   - deployment.yaml

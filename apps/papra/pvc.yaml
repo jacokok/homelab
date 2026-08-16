@@ -20,7 +20,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs
+  storageClassName: ""
+  volumeName: nfs-documents
   resources:
     requests:
-      storage: 10Gi
+      storage: 10Ti
