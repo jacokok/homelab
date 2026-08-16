@@ -8,3 +8,4 @@ resources:
   - ./jellyfin
   - ./esphome
   - ./go2rtc
+  - ./papra

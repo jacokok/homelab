@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: papra
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: papra
+  template:
+    metadata:
+      labels:
+        app: papra
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      initContainers:
+        - name: init-data
+          image: ghcr.io/papra-hq/papra:26.6.1-rootless
+          command:
+            - sh
+            - -c
+            - mkdir -p /app/app-data/db
+          volumeMounts:
+            - mountPath: /app/app-data
+              name: papra-app-data
+      containers:
+        - name: papra
+          image: ghcr.io/papra-hq/papra:26.6.1-rootless
+          ports:
+            - containerPort: 1221
+              protocol: TCP
+          env:
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: papra-secret
+                  key: AUTH_SECRET
+            - name: APP_BASE_URL
+              value: https://papra.doink.co.za
+            - name: INGESTION_FOLDER_IS_ENABLED
+              value: "false"
+            - name: DOCUMENT_STORAGE_FILESYSTEM_ROOT
+              value: /app/documents
+            - name: PGUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - mountPath: /app/app-data
+              name: papra-app-data
+            - mountPath: /app/documents
+              name: papra-documents
+              subPath: documents
+      restartPolicy: Always
+      volumes:
+        - name: papra-app-data
+          persistentVolumeClaim:
+            claimName: papra-app-data
+        - name: papra-documents
+          persistentVolumeClaim:
+            claimName: papra-documents
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: papra
+spec:
+  selector:
+    app: papra
+  ports:
+    - port: 1221
+      targetPort: 1221
+      protocol: TCP

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: papra-restorer
+  namespace: papra
+spec:
+  containers:
+  - name: web-server
+    image: alpine
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /data/app-data
+      name: app-data
+    - mountPath: /data/documents
+      name: documents
+  volumes:
+  - name: app-data
+    persistentVolumeClaim:
+      claimName: papra-app-data
+  - name: documents
+    persistentVolumeClaim:
+      claimName: papra-documents
