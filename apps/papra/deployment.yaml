@@ -42,7 +42,7 @@ spec:
                   name: papra-secret
                   key: AUTH_SECRET
             - name: APP_BASE_URL
-              value: https://papra.doink.co.za
+              value: http://192.168.1.36:31221
             - name: INGESTION_FOLDER_IS_ENABLED
               value: "false"
             - name: DOCUMENT_STORAGE_FILESYSTEM_ROOT
@@ -71,9 +71,11 @@ kind: Service
 metadata:
   name: papra
 spec:
+  type: NodePort
   selector:
     app: papra
   ports:
     - port: 1221
       targetPort: 1221
+      nodePort: 31221
       protocol: TCP
