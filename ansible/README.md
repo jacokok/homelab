@@ -39,6 +39,7 @@ ansible-playbook playbooks/site.yml
 # Just one stage
 ansible-playbook playbooks/system.yml     # apt update/upgrade + packages + iscsid
 ansible-playbook playbooks/k3s.yml        # install k3s master + join workers
+ansible-playbook playbooks/updates.yml    # apt upgrade + in-place k3s upgrade
 ansible-playbook playbooks/registries.yml # write /etc/rancher/k3s/registries.yaml
 ```
 

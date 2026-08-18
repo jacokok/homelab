@@ -1,0 +1,75 @@
+---
+# Routine maintenance: update apt packages on all nodes, then upgrade k3s
+# in place by re-running the official install script (same command as install).
+
+- name: Update apt packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Run apt update
+      ansible.builtin.apt:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: dist
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Remove obsolete packages and old kernels
+      ansible.builtin.apt:
+        autoremove: true
+        purge: true
+
+- name: Upgrade k3s server on masters
+  hosts: k3s_masters
+  become: true
+  tasks:
+    - name: Re-run the k3s install script to upgrade in place
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="{{ k3s_server_exec_args }}" sh -s -
+      environment:
+        INSTALL_K3S_EXEC: "{{ k3s_server_exec_args }}"
+
+    - name: Ensure k3s is running
+      ansible.builtin.systemd:
+        name: k3s
+        enabled: true
+        state: started
+
+    - name: Wait for the k3s API to come back
+      ansible.builtin.wait_for:
+        host: "{{ groups['k3s_masters'][0] }}"
+        port: 6443
+        timeout: 180
+      delegate_to: localhost
+
+- name: Upgrade k3s agents on workers
+  hosts: k3s_workers
+  become: true
+  serial: 1
+  tasks:
+    - name: Get master token from a master host
+      ansible.builtin.slurp:
+        path: /var/lib/rancher/k3s/server/node-token
+      delegate_to: "{{ groups['k3s_masters'][0] }}"
+      register: k3s_node_token
+      run_once: true
+
+    - name: Set k3s_token fact
+      ansible.builtin.set_fact:
+        k3s_token: "{{ k3s_node_token['content'] | b64decode | trim }}"
+
+    - name: Re-run the k3s install script to upgrade in place
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | \
+          K3S_TOKEN={{ k3s_token }} \
+          K3S_URL=https://{{ groups['k3s_masters'][0] }}:6443 \
+          sh -s -
+      no_log: true
+
+    - name: Ensure k3s-agent is running
+      ansible.builtin.systemd:
+        name: k3s-agent
+        enabled: true
+        state: started
