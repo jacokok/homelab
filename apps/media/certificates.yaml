@@ -1,0 +1,39 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: radarr-tls
+spec:
+  secretName: radarr-tls
+  commonName: radarr.doink.co.za
+  dnsNames:
+    - radarr.doink.co.za
+  issuerRef:
+    name: cloudflare-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarr-tls
+spec:
+  secretName: sonarr-tls
+  commonName: sonarr.doink.co.za
+  dnsNames:
+    - sonarr.doink.co.za
+  issuerRef:
+    name: cloudflare-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nzbget-tls
+spec:
+  secretName: nzbget-tls
+  commonName: nzbget.doink.co.za
+  dnsNames:
+    - nzbget.doink.co.za
+  issuerRef:
+    name: cloudflare-issuer
+    kind: ClusterIssuer

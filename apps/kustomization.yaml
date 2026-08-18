@@ -9,3 +9,4 @@ resources:
   - ./esphome
   - ./go2rtc
   - ./papra
+  - ./media
