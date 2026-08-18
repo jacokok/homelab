@@ -39,10 +39,8 @@
 
     - name: Wait for the k3s API to come back
       ansible.builtin.wait_for:
-        host: "{{ groups['k3s_masters'][0] }}"
         port: 6443
         timeout: 180
-      delegate_to: localhost
 
 - name: Upgrade k3s agents on workers
   hosts: k3s_workers
