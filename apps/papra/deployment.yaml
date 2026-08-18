@@ -26,6 +26,12 @@ spec:
             - sh
             - -c
             - mkdir -p /app/app-data/db
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
           volumeMounts:
             - mountPath: /app/app-data
               name: papra-app-data
@@ -35,6 +41,12 @@ spec:
           ports:
             - containerPort: 1221
               protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 768Mi
           env:
             - name: AUTH_SECRET
               valueFrom:

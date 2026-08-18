@@ -19,6 +19,12 @@ spec:
           image: docker.io/searxng/searxng:2026.8.10-0a118066d
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 512Mi
           volumeMounts:
             - mountPath: /etc/searxng/settings.yml
               name: searxng-config
@@ -37,6 +43,12 @@ spec:
           image: docker.io/valkey/valkey:9.1.1
           ports:
             - containerPort: 6379
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
           args:
             - --loglevel
             - warning

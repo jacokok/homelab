@@ -32,6 +32,12 @@ spec:
               protocol: TCP
             - containerPort: 8555
               protocol: UDP
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              memory: 512Mi
           securityContext:
             privileged: true
           volumeMounts:

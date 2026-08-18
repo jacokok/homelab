@@ -30,6 +30,12 @@ spec:
           ports:
             - containerPort: 7878
               protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
           env:
             - name: PUID
               value: "1000"
@@ -102,6 +108,12 @@ spec:
           ports:
             - containerPort: 8989
               protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
           env:
             - name: PUID
               value: "1000"
@@ -174,6 +186,12 @@ spec:
           ports:
             - containerPort: 6789
               protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 512Mi
           env:
             - name: PUID
               value: "1000"
