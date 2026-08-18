@@ -1,13 +1,15 @@
+---
 apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+kind: IngressRouteTCP
 metadata:
   name: searxng
 spec:
   entryPoints:
     - websecure
   routes:
-    - kind: Rule
-      match: Host(`searxng.doink.co.za`)
+    - match: HostSNI(`searxng.doink.co.za`)
+      middlewares:
+        - name: searxng-whitelist
       services:
         - name: searxng
           port: 8080
