@@ -4,4 +4,8 @@ namespace: ha
 resources:
   - namespace.yaml
   - db.yaml
+  - pvc.yaml
+  - deployment.yaml
   - service.yaml
+  - certificate.yaml
+  - ingress.yaml

@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ha-tls
+spec:
+  secretName: ha-tls
+  commonName: ha.doink.co.za
+  dnsNames:
+    - ha.doink.co.za
+  issuerRef:
+    name: cloudflare-issuer
+    kind: ClusterIssuer
