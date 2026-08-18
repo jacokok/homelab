@@ -4,6 +4,7 @@ resources:
   - ./searxng
   - ./seerr
   - ./ha
+  - ./mosquitto
   - ./dbackup
   - ./jellyfin
   - ./esphome

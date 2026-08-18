@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: mosquitto-config
+data:
+    mosquitto.conf: ENC[AES256_GCM,data:GklMymuxIe1mbJkx1xIe2iltI/g+dtF74Z6JrcxCrmbXWOfBewOBuRWNpNdMWcU9h54Mu1fJD6Ieg+V5OEnWcbeoasxMdnCTIx5pBshYcWPLEgW+xbutAi/2YYNk69hT+mcn2M1aBXeGe5HoDwSgGr0G2F25DKtPZQ7KfQBfdj3HEjeqUdIf6UTYDiow5oiXh55f2JozKDbybyh0AE+FRYnWSru0TEYF+w96bsXRbgIa4neQFPysbtVqhfpb5BCpvuHaZrXUjOl3Gf5rOCBtNz/wy8NMImgrvTLpGr1ces7d69FJkGoHgbZ8MAc5ycUrv34I6dNQXMpm0k1nu8CDhgXjp76KcUaBvZfjhfMo97WU1xLiBNRq7NwOAw4lcz7eEwEGjWeWbmm3D1F4ycdiKrm9m9l/myFy7h6WBpiHBi5boFXbChBMWsW+sceiy804B/DGDED0pEnfC4ybxkSirXeQrqJCKWCZBSs/,iv:5WmzuczgXKB5iZWmuJAiO6UkKAAvbIW72PgLRC9Ph9Q=,tag:HvCWTcv3Pa6G4o5/pT/wIA==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBxT0NtTHlXak5OcmJ2VCth
+            N2pncGtXWFpCSXNNOGIya0NKYU1mVTA0T2g0CitFQXRBNXFUNVBYTit1Y0JwQllE
+            OUdXTmZjbTZHUmpValgxVVFhYTMvK00KLS0tIFJ5OFdBeTlJN2tZaU9MMGM4aVVn
+            OExpZk5TWm1GZWNCYmJFclRyUk5OZjgK1/pXNd2O8H3FCbOTA/SDmAdeALwPCt4C
+            9ib5iEMgxYhnNaVZtNWy+mfyrvWogBM+hYQ6Eq9b8qPyn9okaYd4Jg==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1palh43zgjqhkankzl4gltrhvruyucfefph4tlzlp00t8kvp3xqaqkvxjul
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-08-18T09:13:28Z"
+    mac: ENC[AES256_GCM,data:8WcenGtdYzoGr+/VL4pmueyaQjZI42vWxs4zNAv/Kxpv5l30M0zBgO+6HzM0O/bkmIWnccPJYNFKmx3/YZN7z2FilN9G5kaE7SIwys0F1AK7MWJGk4kcP8UxQQS+q6PQB0MEy/ajMTaUcxKZOixtyQ5GhvuGNgc1bdMjR7M35Jo=,iv:PryDbcVXxpo2xg8VO/Pz0DO9l2q9Vn8W36Cqgarhy3I=,tag:2vZMK7N0FySoRfwW0Q3CnQ==,type:str]
+    version: 3.13.3

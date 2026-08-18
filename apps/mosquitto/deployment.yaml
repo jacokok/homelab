@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      securityContext:
+        fsGroup: 1883
+      containers:
+        - name: mosquitto
+          image: docker.io/eclipse-mosquitto:2.1.2-alpine
+          ports:
+            - containerPort: 1883
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /mosquitto/config/mosquitto.conf
+              name: config
+              subPath: mosquitto.conf
+              readOnly: true
+            - mountPath: /mosquitto/config/mqtt_passwd
+              name: passwd
+              subPath: mqtt_passwd
+              readOnly: true
+            - mountPath: /mosquitto/data
+              name: data
+      restartPolicy: Always
+      volumes:
+        - name: config
+          configMap:
+            name: mosquitto-config
+            items:
+              - key: mosquitto.conf
+                path: mosquitto.conf
+        - name: passwd
+          secret:
+            secretName: mosquitto-passwd
+            items:
+              - key: mqtt_passwd
+                path: mqtt_passwd
+        - name: data
+          persistentVolumeClaim:
+            claimName: mosquitto-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto
+spec:
+  type: NodePort
+  selector:
+    app: mosquitto
+  ports:
+    - name: mqtt
+      port: 1883
+      targetPort: 1883
+      nodePort: 31883
+      protocol: TCP
