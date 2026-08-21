@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kube-prometheus-stack
-      version: 88.5.2
+      version: 88.5.3
   install:
     crds: Create
   interval: 1h0m0s
