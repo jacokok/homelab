@@ -4,9 +4,12 @@ Homelab test
 
 ## Structure
 
-- clusters
+- cluster
 - infrastructure
 - apps
+- ansible ([docs](./ansible/README.md))
+
+K3s install notes live in [k3s.md](./k3s.md).
 
 ### Init Secrets
 
