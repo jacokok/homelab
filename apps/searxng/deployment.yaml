@@ -40,7 +40,7 @@ spec:
                   name: searxng-secret
                   key: SEARXNG_SECRET
         - name: valkey
-          image: docker.io/valkey/valkey:9.1.1
+          image: docker.io/valkey/valkey:9.1.2
           ports:
             - containerPort: 6379
           resources:
