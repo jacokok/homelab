@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: init-data
-          image: ghcr.io/papra-hq/papra:26.6.1-rootless
+          image: ghcr.io/papra-hq/papra:26.6.2-rootless
           command:
             - sh
             - -c
@@ -37,7 +37,7 @@ spec:
               name: papra-app-data
       containers:
         - name: papra
-          image: ghcr.io/papra-hq/papra:26.6.1-rootless
+          image: ghcr.io/papra-hq/papra:26.6.2-rootless
           ports:
             - containerPort: 1221
               protocol: TCP
