@@ -182,7 +182,7 @@ spec:
                       - venus
       containers:
         - name: nzbget
-          image: docker.io/linuxserver/nzbget:26.3.20260827
+          image: docker.io/linuxserver/nzbget:26.3.20260904
           ports:
             - containerPort: 6789
               protocol: TCP
