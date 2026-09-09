@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - pvs.yaml
-  - repo.yaml
-  - release.yaml
+  - deployment.yaml
+  - service.yaml
   - certificate.yaml
   - ingress.yaml
