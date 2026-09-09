@@ -5,6 +5,10 @@ python = "3.14.7"
 "krew:tree" = "latest"
 "krew:cnpg" = "latest"
 yamllint = "latest"
+uv = "latest"
+flux2 = "latest"
+kubectl = "latest"
+k9s = "latest"
 
 [env]
 # Put ansible config / inventory discovery on the project root for ansible/
