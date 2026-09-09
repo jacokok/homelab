@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: gpu-dri
+                    operator: Exists
+      containers:
+        - name: jellyfin
+          image: docker.io/jellyfin/jellyfin:12.0.0
+          ports:
+            - containerPort: 8096
+              protocol: TCP
+          securityContext:
+            privileged: true
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: jellyfin.doink.co.za
+          startupProbe:
+            tcpSocket:
+              port: 8096
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /cache
+              name: cache
+            - mountPath: /media
+              name: media
+            - mountPath: /external/series
+              name: files
+              subPath: series
+            - mountPath: /external/movies
+              name: files
+              subPath: movies
+            - mountPath: /dev/dri
+              name: dri
+      restartPolicy: Always
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+        - name: cache
+          emptyDir: {}
+        - name: media
+          emptyDir: {}
+        - name: files
+          persistentVolumeClaim:
+            claimName: files
+        - name: dri
+          hostPath:
+            path: /dev/dri
