@@ -22,6 +22,8 @@ spec:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
+        - key: CriticalAddonsOnly
+          operator: Exists
       containers:
         - name: image-pruner
           image: docker.io/rancher/k3s:v1.36.3-k3s1
