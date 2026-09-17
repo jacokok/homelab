@@ -9,6 +9,7 @@ uv = "latest"
 flux2 = "latest"
 kubectl = "latest"
 k9s = "latest"
+"github:nklmilojevic/sofka" = "latest"
 
 [env]
 # Put ansible config / inventory discovery on the project root for ansible/
