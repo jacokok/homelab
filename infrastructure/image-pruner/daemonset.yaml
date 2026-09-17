@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: image-pruner
+  namespace: image-pruner
+  labels:
+    app.kubernetes.io/name: image-pruner
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: image-pruner
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: image-pruner
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: image-pruner
+          image: docker.io/rancher/k3s:v1.36.3-k3s1
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - |
+              while true; do
+                used=$(df --output=pcent /run/k3s/containerd | tail -1 | tr -dc '0-9')
+                if [ "$used" -ge "$GC_THRESHOLD" ]; then
+                  echo "disk usage ${used}% >= ${GC_THRESHOLD}%, pruning unused images"
+                  crictl -r "$CRI_ENDPOINT" --timeout 10m rmi --prune || true
+                  df -h /run/k3s/containerd | tail -1
+                else
+                  echo "disk usage ${used}% < ${GC_THRESHOLD}%, skipping prune"
+                fi
+                sleep "$INTERVAL"
+              done
+          env:
+            - name: CRI_ENDPOINT
+              value: unix:///run/k3s/containerd/containerd.sock
+            - name: GC_THRESHOLD
+              value: "70"
+            - name: INTERVAL
+              value: "21600"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: containerd-socket
+              mountPath: /run/k3s/containerd
+              readOnly: true
+      volumes:
+        - name: containerd-socket
+          hostPath:
+            path: /run/k3s/containerd
+            type: Directory

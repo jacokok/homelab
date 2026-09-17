@@ -6,5 +6,6 @@ resources:
   - ./k8up
   - ./longhorn
   - ./nfs-provisioner
+  - ./image-pruner
   # - ./kube-prometheus-stack
   - ./cloudnative-pg
