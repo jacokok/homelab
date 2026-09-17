@@ -33,11 +33,11 @@ spec:
             - -c
             - |
               while true; do
-                used=$(df --output=pcent /run/k3s/containerd | tail -1 | tr -dc '0-9')
+                used=$(df --output=pcent / | tail -1 | tr -dc '0-9')
                 if [ "$used" -ge "$GC_THRESHOLD" ]; then
                   echo "disk usage ${used}% >= ${GC_THRESHOLD}%, pruning unused images"
                   crictl -r "$CRI_ENDPOINT" --timeout 10m rmi --prune || true
-                  df -h /run/k3s/containerd | tail -1
+                  df -h / | tail -1
                 else
                   echo "disk usage ${used}% < ${GC_THRESHOLD}%, skipping prune"
                 fi
