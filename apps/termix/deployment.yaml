@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: termix
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: termix
+  template:
+    metadata:
+      labels:
+        app: termix
+    spec:
+      containers:
+        - name: termix
+          image: ghcr.io/termix-ssh/termix:26.11.0
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: JWT_SECRET_FILE
+              value: /run/secrets/termix/JWT_SECRET
+            - name: DATABASE_KEY_FILE
+              value: /run/secrets/termix/DATABASE_KEY
+            - name: ENCRYPTION_KEY_FILE
+              value: /run/secrets/termix/ENCRYPTION_KEY
+            - name: INTERNAL_AUTH_TOKEN_FILE
+              value: /run/secrets/termix/INTERNAL_AUTH_TOKEN
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: secrets
+              mountPath: /run/secrets/termix
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: termix-data
+        - name: secrets
+          secret:
+            secretName: termix-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: termix
+spec:
+  selector:
+    app: termix
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP

@@ -11,3 +11,4 @@ resources:
   - ./go2rtc
   - ./papra
   - ./media
+  - ./termix

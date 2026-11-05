@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: termix
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`termix.doink.co.za`)
+      services:
+        - name: termix
+          port: 8080
+  tls:
+    secretName: termix-tls
