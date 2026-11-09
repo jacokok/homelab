@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: termix
-          image: ghcr.io/termix-ssh/termix:26.11.0
+          image: ghcr.io/termix-ssh/termix:26.11.1
           ports:
             - containerPort: 8080
               protocol: TCP
