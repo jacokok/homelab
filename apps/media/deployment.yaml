@@ -26,7 +26,7 @@ spec:
                       - venus
       containers:
         - name: radarr
-          image: docker.io/linuxserver/radarr:6.4.4
+          image: docker.io/linuxserver/radarr:7.0.3
           ports:
             - containerPort: 7878
               protocol: TCP
