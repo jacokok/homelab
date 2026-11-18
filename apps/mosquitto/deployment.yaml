@@ -19,7 +19,7 @@ spec:
         fsGroup: 1883
       containers:
         - name: mosquitto
-          image: docker.io/eclipse-mosquitto:2.1.2-alpine
+          image: docker.io/eclipse-mosquitto:2.1.4-alpine
           ports:
             - containerPort: 1883
               protocol: TCP
