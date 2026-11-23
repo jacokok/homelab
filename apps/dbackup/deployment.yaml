@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dbackup
-          image: skyfay/dbackup:v4.0.2
+          image: skyfay/dbackup:v5.0.0
           ports:
             - containerPort: 3000
               protocol: TCP
